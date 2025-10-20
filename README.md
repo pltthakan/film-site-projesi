@@ -6,7 +6,6 @@
 **Repo/Dizin:** `BitirmeProjesiYeni/`
 **Tarih:** 2025-10-20
 
-> Bu doküman; projeyi klonlayıp yapılandırmaktan, mimariyi anlamaya; kod yapısı, akışlar, test, dağıtım ve gelişim planına kadar tüm detayları kapsar. Dokümanın amacı; projeyi hiç bilmeyen birinin dahi tek başına kurup çalıştırabilmesi ve geliştirmeye devam edebilmesidir.
 
 ---
 
