@@ -1,23 +1,13 @@
 
 
----
-
-# **Proje Adı:** Film Öneri Sitesi (Flask + TMDB)
-
-**Geliştirici:** Hakan Polat
-**Teknolojiler:** Python 3.11+, Flask, Jinja2, Tailwind (CDN), Vanilla JS, TMDB API, PostgreSQL (psycopg3), python-dotenv
-
-
----
-
-## 1) Proje Özeti (güncel)
+## 1) Proje Özeti
 
 Kullanıcılar **popüler/yeni** filmleri görür, **tür/yıl/puan** filtreleriyle keşif yapar, film detaylarını inceler, **YouTube fragmanını** izler. **Arama kutusunda canlı öneri** (autocomplete) açılır panel olarak gelir.
 Kullanıcı **girişi** ile şu sosyal özellikler devreye girer:
 
 * **Favoriler:** Detay sayfasından tek tıkla ekle/çıkar, “Favoriler” sayfası.
-* **Like / Dislike:** Detay sayfasında beğendim/beğenmedim (toggle; sayacı var).
-* **Yorum + Duygu Analizi:** (altyapı hazır; `sentiment.py` ile POS/NEG/NEU etiketleniyor).
+* **Like / Dislike:** Detay sayfasında beğendim/beğenmedim 
+* **Yorum:**  : Yorum yazabilir
 
 **Veri kaynağı:** TMDB REST API. Kimlik ve sosyal veriler **PostgreSQL**’de tutulur.
 
@@ -30,7 +20,7 @@ Kullanıcı **girişi** ile şu sosyal özellikler devreye girer:
 
 ---
 
-## 2) Dizin Yapısı (güncel)
+## 2) Dizin Yapısı 
 
 ```
 BitirmeProjesiYeni/
@@ -52,9 +42,9 @@ BitirmeProjesiYeni/
 
 ---
 
-## 3) Bağımlılıklar (güncel)
+## 3) Bağımlılıklar 
 
-`requirements.txt` önerisi:
+`requirements.txt`:
 
 ```
 flask==3.0.3
@@ -66,7 +56,6 @@ transformers==4.44.2
 torch>=2.2
 ```
 
-> `transformers/torch` yorumların duygu analizi içindir; çekirdek akış bunlar olmadan da çalışır.
 
 ---
 
@@ -80,7 +69,7 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-2. **.env** (örnek)
+2. **.env** 
 
 ```dotenv
 TMDB_API_KEY=xxx
@@ -105,7 +94,7 @@ python app.py
 
 ---
 
-## 5) Mimari (güncel)
+## 5) Mimari 
 
 * **Sunum:** Tailwind + Jinja2 şablonlar; `static/main.js` ile dinamik etkileşimler.
 * **Uygulama:** Flask route’ları; kimlik doğrulama; favori/oylama; yorum + sentiment; TMDB yardımcıları; tür listesi için `@lru_cache`.
@@ -130,7 +119,7 @@ python app.py
 
 ---
 
-## 7) Backend Uçları (güncel)
+## 7) Backend Uçları 
 
 * `GET /` → Ana sayfa (Yeni, Trend, Film Robotu verisi)
 
@@ -156,7 +145,7 @@ python app.py
 
 ---
 
-## 8) Frontend (güncel)
+## 8) Frontend 
 
 * **Navbar:** `Film izle`, `Listeler`, **Favoriler** (sadece login ise).
 * **Arama kutusu:** **canlı öneri** paneli; yön tuşları/Enter/Escape destekli; tıklayınca kapanır.
@@ -181,51 +170,10 @@ python app.py
 
 ---
 
-## 10) Manuel Test Senaryoları (güncel)
 
-1. **Kayıt/Giriş/Çıkış** akışı.
-2. **Favori Toggle:** Detay → Favorilere Ekle; tekrar tıkla → kaldır. `/favorites`’te görünmeli/kaybolmalı.
-3. **Like/Dislike Toggle:**
 
-   * Like’a bas → sayaç +1, buton yeşil.
-   * Tekrar Like → oy kaldır (sayaç eski hal).
-   * Dislike’a bas → Like kalkıp Dislike aktif olmalı (veya tersi).
-4. **Canlı Öneri:** “superman” yaz → panel 8 sonuç listelesin; ok tuşlarıyla gez; Enter → detay sayfasına git.
-5. **Discover:** Filtre/sayfalama, kapat → “Yeni Filmler” geri gelsin.
-6. **Fragman Modal:** Aç/kapat; dışına tıklayınca kapanmalı.
-7. **Yorum:** Spoiler kutusu açık/kapalı; sentiment rozeti görünsün.
-8. **Yetki Kontrolü:** Login olmadan favori/oy/yorum uçlarına POST → login’e yönlen.
 
----
 
-## 11) Dağıtım (Öneri)
 
-* **Gunicorn:** `gunicorn 'app:app' --workers 2 --timeout 30`
-* **Reverse Proxy:** Nginx (gzip + cache headers)
-* **Env:** `.env` gizli; `debug=False`
-* **DB:** PostgreSQL (Neon/Render/ElephantSQL uygun); `DATABASE_URL` ver
-* **Statikler:** Nginx üzerinden; uzun `Cache-Control`
-* **Günlükleme:** Erişim/hata logları; logrotasyon
 
----
-
-## 12) Yol Haritası (güncel)
-
-* [ ] Favorilerde **sayfalı TMDB toplu fetch** (istek sayısını azalt).
-* [ ] **İleri analizler:** Favori + rating’e göre **kişiselleştirilmiş öneri** (içerik tabanlı/SBERT).
-* [ ] **E-posta doğrulama / parola sıfırlama**.
-* [ ] **Rate limit & global error banner** (TMDB hata/limit).
-* [ ] **Redis cache** (Trend/Now Playing/Discover response’ları).
-* [ ] **Unit/Integration tests** (pytest + requests-mock).
-* [ ] **CI/CD** (GitHub Actions).
-
----
-
-## 13) SSS (kısa)
-
-* **IMDB puanı nereden?** TMDB `vote_average` alanı görselde “IMDB” etiketiyle gösteriliyor; TMDB puanıdır.
-* **Favori/Like neden DB’de?** Kullanıcıya özgü, kalıcı ve sorgulanabilir olması için.
-* **Neden PostgreSQL?** Güvenilir, ilişkisel; UNIQUE/foreign key/transaction gereksinimleri için uygun.
-
----
 
